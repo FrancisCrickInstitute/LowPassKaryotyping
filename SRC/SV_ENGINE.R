@@ -44,8 +44,31 @@ EXPECTED.PARAMS <- c(
 		)
 if( FALSE )
 {
-##cat("SETTING TESTING PARAMETERS\n")
-##my.args <- c()
+cat("SETTING TESTING PARAMETERS\n")
+my.args <- c(
+"CONFIG.R_PATH=/camp/stp/babs/working/horswes/Projects/sequencing/jerome.nicod/sv_pipline/AutoKaryotype_V2.0/SRC/config.R", 
+"SCHEDULER_OPTIONS= --ntasks=1  -t 1-00:00:00 --cpus-per-task=8 ",
+"MAX_THREADS=7",
+"PROJECT_NAME=AutoKaryo_Project_1", 
+"PROJECT_DIR=/camp/stp/babs/working/horswes/Projects/sequencing/jerome.nicod/sv_pipline/AutoKaryotype_V2.0/TEST_OUTPUT/AutoKaryo-Project-1/", 
+"LIMS_ID=NIC216A12", 
+"SAMPLE_NAME_RAW=H9-C12-20-single-cell",
+"FASTQ_1=/camp/stp/babs/working/horswes/Projects/sequencing/jerome.nicod/sv_pipline/AutoKaryotype_V2.0/TEST_OUTPUT/AutoKaryo-Project-1/FASTQ_RAW/NIC216A12_S26_L005_R1_001.fastq.gz", 
+"FASTQ_2=/camp/stp/babs/working/horswes/Projects/sequencing/jerome.nicod/sv_pipline/AutoKaryotype_V2.0/TEST_OUTPUT/AutoKaryo-Project-1/FASTQ_RAW/NIC216A12_S26_L005_R2_001.fastq.gz", 
+"REFERENCE_PATH=/camp/svc/reference/Genomics/babs/homo_sapiens/ensembl/GRCh38/release-89/genome_idx/bwa/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa", 
+"ANNOTATED_BINS_FILE=/camp/stp/babs/working/horswes/Projects/sequencing/jerome.nicod/sv_pipline/Data/QDNAseq_bins/QDNAseq-bin_BSgenome.Hsapiens.NCBI.GRCh38_1000k.RDat", 
+"FASTQC_RAW_DIR=/camp/stp/babs/working/horswes/Projects/sequencing/jerome.nicod/sv_pipline/AutoKaryotype_V2.0/TEST_OUTPUT/AutoKaryo-Project-1/FASTQC_RAW/", 
+"FASTQ_TRIMMED_DIR=/camp/stp/babs/working/horswes/Projects/sequencing/jerome.nicod/sv_pipline/AutoKaryotype_V2.0/TEST_OUTPUT/AutoKaryo-Project-1/FASTQ_TRIMMED/", 
+"FASTQC_TRIMMED_DIR=/camp/stp/babs/working/horswes/Projects/sequencing/jerome.nicod/sv_pipline/AutoKaryotype_V2.0/TEST_OUTPUT/AutoKaryo-Project-1/FASTQC_TRIMMED/", 
+"SAM_DIR=/camp/stp/babs/working/horswes/Projects/sequencing/jerome.nicod/sv_pipline/AutoKaryotype_V2.0/TEST_OUTPUT/AutoKaryo-Project-1/TMP/SAM/", 
+"BAM_DIR=/camp/stp/babs/working/horswes/Projects/sequencing/jerome.nicod/sv_pipline/AutoKaryotype_V2.0/TEST_OUTPUT/AutoKaryo-Project-1/TMP/BAM/", 
+"BAM_SORTED_DIR=/camp/stp/babs/working/horswes/Projects/sequencing/jerome.nicod/sv_pipline/AutoKaryotype_V2.0/TEST_OUTPUT/AutoKaryo-Project-1/BAM_SORTED/", 
+"QDNASEQ_BED_FILE=/camp/stp/babs/working/horswes/Projects/sequencing/jerome.nicod/sv_pipline/AutoKaryotype_V2.0/human_chr3.bed",
+"QDNASEQ_DIR=/camp/stp/babs/working/horswes/Projects/sequencing/jerome.nicod/sv_pipline/AutoKaryotype_V2.0/TEST_OUTPUT/AutoKaryo-Project-1/QDNASEQ/", 
+"XY_QDNASEQ_DIR=/camp/stp/babs/working/horswes/Projects/sequencing/jerome.nicod/sv_pipline/AutoKaryotype_V2.0/TEST_OUTPUT/AutoKaryo-Project-1/QDNASEQ_XY/", 
+"RESULTS_DIR=/camp/stp/babs/working/horswes/Projects/sequencing/jerome.nicod/sv_pipline/AutoKaryotype_V2.0/TEST_OUTPUT/AutoKaryo-Project-1/RESULTS/", 
+"COMPLETION_FILE_NAME=/camp/stp/babs/working/horswes/Projects/sequencing/jerome.nicod/sv_pipline/AutoKaryotype_V2.0/TEST_OUTPUT/AutoKaryo-Project-1/RESULTS/NIC216A12_individual.done" 
+)
 }
 
 
@@ -570,8 +593,11 @@ fastqc.2.trimmed.done <- paste(PARAMS[["FASTQC_TRIMMED_DIR"]], ".", this.lims.id
 	cat(msg)
 	}
 
-	if( !file.exists(fastqc.2.trimmed.done) || FORCE.PROCESS.DOWNSTREAM )
+	#if( !file.exists(fastqc.2.trimmed.done) || FORCE.PROCESS.DOWNSTREAM )
+	if( PARAMS[["FASTQ_2"]] != "SINGLE_END" && !file.exists(fastqc.2.trimmed.done) )
 	{
+	FORCE.PROCESS.DOWNSTREAM  <-  TRUE
+
 	##no need to set FORCE.PROCESS.DOWNSTREAM here as these results don't impact anything downstream
 
 	this.input.fastq.file <- PARAMS[["TRIMMED_FASTQ_2"]]
